@@ -28,13 +28,15 @@ public class DsmetaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		List<Sale> list = repository.reportSale(LocalDate.parse("2022-05-01"),LocalDate.parse("2022-05-31"), "odinson");
+		/*
+		Page<Sale> list = repository.reportSale(LocalDate.parse("2022-05-01"),LocalDate.parse("2022-05-31"), "odinson");
 		
 		List<SaleReportDTO> result1 = list.stream().map(x -> new SaleReportDTO(x)).collect(Collectors.toList());
 		
 		for(SaleReportDTO obj : result1) {
 			System.out.println(obj);
 		}
+		*/
 		
 	}
 }
