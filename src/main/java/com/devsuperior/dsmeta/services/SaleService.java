@@ -1,7 +1,9 @@
 package com.devsuperior.dsmeta.services;
 
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import com.devsuperior.dsmeta.repositories.SaleRepository;
 
 @Service
 public class SaleService {
+	
+	private static final LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
 
 	@Autowired
 	private SaleRepository repository;
@@ -27,7 +31,22 @@ public class SaleService {
 	}	
 	
 	public Page<SaleReportDTO> reportSale(String minDate, String maxDate, String sellerName, Pageable pageable){
-		Page<Sale> result = repository.reportSale(LocalDate.parse(minDate), LocalDate.parse(maxDate), sellerName, pageable);
+		LocalDate minDateAux;
+		LocalDate maxDateAux;
+		
+		if(maxDate == null || maxDate == "") {
+			maxDateAux = today;
+		} else {
+			maxDateAux = LocalDate.parse(maxDate);
+		}
+		
+		if(minDate == null || minDate == "") {
+			minDateAux = maxDateAux.minusYears(1L);
+		} else {
+			minDateAux = LocalDate.parse(minDate);
+		}
+		
+		Page<Sale> result = repository.reportSale(minDateAux, maxDateAux, sellerName, pageable);
 		return result.map(x -> new SaleReportDTO(x));		
 	}
 	
