@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.dto.SaleReportDTO;
+import com.devsuperior.dsmeta.dto.SaleSumDTO;
 import com.devsuperior.dsmeta.services.SaleService;
 
 @RestController
@@ -34,8 +35,8 @@ public class SaleController {
 	}
 
 	@GetMapping(value = "/summary")
-	public ResponseEntity<?> getSummary() {
-		// TODO
-		return null;
+	public ResponseEntity<Page<SaleSumDTO>> getSummary(Pageable pageable) {
+		Page<SaleSumDTO> dto = service.saleSum(pageable);
+		return ResponseEntity.ok(dto);
 	}
 }

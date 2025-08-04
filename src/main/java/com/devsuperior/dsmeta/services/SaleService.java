@@ -52,7 +52,7 @@ public class SaleService {
 		return result.map(x -> new SaleReportDTO(x));		
 	}
 	
-	Page<SaleSumDTO> saleSum(Pageable pageable){
+	public Page<SaleSumDTO> saleSum(Pageable pageable){
 		Page<SaleSumProjection> page = repository.saleSum(pageable);
 		Page<SaleSumDTO> result = page.map(x -> new SaleSumDTO(x));
 		return result;
