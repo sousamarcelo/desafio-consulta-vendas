@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.dto.SaleReportDTO;
+import com.devsuperior.dsmeta.dto.SaleSumDTO;
 import com.devsuperior.dsmeta.entities.Sale;
+import com.devsuperior.dsmeta.projections.SaleSumProjection;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 
 @Service
@@ -48,6 +50,12 @@ public class SaleService {
 		
 		Page<Sale> result = repository.reportSale(minDateAux, maxDateAux, sellerName, pageable);
 		return result.map(x -> new SaleReportDTO(x));		
+	}
+	
+	Page<SaleSumDTO> saleSum(Pageable pageable){
+		Page<SaleSumProjection> page = repository.saleSum(pageable);
+		Page<SaleSumDTO> result = page.map(x -> new SaleSumDTO(x));
+		return result;
 	}
 	
 }
