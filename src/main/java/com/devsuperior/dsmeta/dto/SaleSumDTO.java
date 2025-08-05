@@ -4,28 +4,33 @@ import com.devsuperior.dsmeta.projections.SaleSumProjection;
 
 public class SaleSumDTO {
 	
-	private String sellerName;
-	private Long total;
+	private String name;
+	private Long sum;
 	
 	public SaleSumDTO() {
 	}
 
-	public SaleSumDTO(String sellerName, Long total) {
-		super();
-		this.sellerName = sellerName;
-		this.total = total;
+	public SaleSumDTO(String name, Long sum) {
+		this.name = name;
+		this.sum = sum;
 	}
 	
 	public SaleSumDTO(SaleSumProjection projection) {
-		this.sellerName = projection.getSellerName();
-		this.total = projection.getSum();
+		name = projection.getName();
+		sum = projection.getSum();
 	}
 
-	public String getSellerName() {
-		return sellerName;
+	public String getName() {
+		return name;
 	}
 
-	public Long getTotal() {
-		return total;
+	public Long getSum() {
+		return sum;
 	}
+
+	@Override
+	public String toString() {
+		return "SaleSumDTO [name=" + name + ", sum=" + sum + "]";
+	}
+	
 }
