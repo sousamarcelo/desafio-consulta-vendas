@@ -33,45 +33,44 @@ public class SaleService {
 	}	
 	
 	public Page<SaleReportDTO> reportSale(String minDate, String maxDate, String sellerName, Pageable pageable){
-		LocalDate minDateAux;
-		LocalDate maxDateAux;
-		
-		if(maxDate == null || maxDate == "") {
-			maxDateAux = today;
-		} else {
-			maxDateAux = LocalDate.parse(maxDate);
-		}
-		
-		if(minDate == null || minDate == "") {
-			minDateAux = maxDateAux.minusYears(1L);
-		} else {
-			minDateAux = LocalDate.parse(minDate);
-		}
+				
+		LocalDate maxDateAux = convertMaxDate(maxDate);
+		LocalDate minDateAux = convertMinDate(minDate, convertMaxDate(maxDate));
 		
 		Page<Sale> result = repository.reportSale(minDateAux, maxDateAux, sellerName, pageable);
 		return result.map(x -> new SaleReportDTO(x));		
 	}
-	
-	
+		
 	public Page<SaleSumDTO> saleSum(String minDate, String maxDate,Pageable pageable){
-		LocalDate minDateAux;
-		LocalDate maxDateAux;
+				
+		LocalDate maxDateAux = convertMaxDate(maxDate);
+		LocalDate minDateAux = convertMinDate(minDate, convertMaxDate(maxDate));				
+				
+		Page<SaleSumProjection> page = repository.saleSum(minDateAux, maxDateAux, pageable);				
+		return page.map(x -> new SaleSumDTO(x));
+	}
+		
+	private LocalDate convertMinDate(String minDate, LocalDate maxDateAux) {		
+		LocalDate minDateAux;			
+		
+		if(minDate == null || minDate == "") {			
+			minDateAux = maxDateAux.minusYears(1L);
+		} else {
+			minDateAux = LocalDate.parse(minDate);
+		}
+				
+		return minDateAux;		
+	}
+	
+	private LocalDate convertMaxDate(String maxDate) {		
+		LocalDate maxDateAux;			
 		
 		if(maxDate == null || maxDate == "") {
 			maxDateAux = today;
 		} else {
 			maxDateAux = LocalDate.parse(maxDate);
 		}
-		
-		if(minDate == null || minDate == "") {
-			minDateAux = maxDateAux.minusYears(1L);
-		} else {
-			minDateAux = LocalDate.parse(minDate);
-		}
-		
-		Page<SaleSumProjection> page = repository.saleSum(minDateAux, maxDateAux, pageable);				
-		return page.map(x -> new SaleSumDTO(x));
-	}
-	
-	
+				
+		return maxDateAux;		
+	}	
 }
